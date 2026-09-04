@@ -1,0 +1,61 @@
+<section class="product-detail-page">
+  <a class="back-link" routerLink="/products">Back to products</a>
+
+  @if (productResource.isLoading()) {
+    <div class="detail-state">
+      <p>Loading product details...</p>
+    </div>
+  }
+
+  @if (productResource.error()) {
+    <div class="detail-state error-state">
+      <h2>Product unavailable</h2>
+      <p>We could not load this product right now.</p>
+    </div>
+  }
+
+  @if (!productResource.isLoading() && !productResource.error() && productResource.value(); as product) {
+    <article class="detail-card">
+      <div class="media-panel">
+        <img class="hero-image" [src]="product.thumbnail" [alt]="product.title" />
+
+        <div class="gallery-strip">
+          @for (image of galleryImages(); track image) {
+            <img [src]="image" [alt]="product.title" />
+          }
+        </div>
+      </div>
+
+      <div class="content-panel">
+        <p class="eyebrow">{{ product.category }} · {{ product.brand }}</p>
+        <h1>{{ product.title }}</h1>
+        <p class="description">{{ product.description }}</p>
+
+        <div class="price-row">
+          <strong class="price">${{ product.price }}</strong>
+          <span class="rating">{{ product.rating }}/5 rating</span>
+        </div>
+
+        <div class="stats-grid">
+          <div>
+            <span class="stat-label">Stock</span>
+            <strong>{{ product.stock }}</strong>
+          </div>
+          <div>
+            <span class="stat-label">Brand</span>
+            <strong>{{ product.brand }}</strong>
+          </div>
+          <div>
+            <span class="stat-label">Category</span>
+            <strong>{{ product.category }}</strong>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button type="button">Add to cart</button>
+          <button type="button" class="secondary">Buy now</button>
+        </div>
+      </div>
+    </article>
+  }
+</section>

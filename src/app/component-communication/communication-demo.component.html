@@ -1,0 +1,79 @@
+<section class="demo-wrap">
+  <h2>Component Communication Demo</h2>
+  <p class="intro">Beginner-friendly examples with small, focused components.</p>
+
+  <div class="demo-grid">
+    <article class="card">
+      <!--
+        1) Parent to Child with @Input
+        The parent component sends values (productName, stock)
+        to the child component using property binding.
+      -->
+      <h3>1) Parent to Child: Input</h3>
+      <app-stock-badge [productName]="productName" [stock]="productStock"></app-stock-badge>
+    </article>
+
+    <article class="card">
+      <!--
+        2) Child to Parent with @Output + EventEmitter
+        The child emits an event (added) and the parent listens
+        using (added)="onAdded($event)".
+      -->
+      <h3>2) Child to Parent: Output</h3>
+      <app-product-actions [productName]="productName" (added)="onAdded($event)"></app-product-actions>
+      <p class="result">Latest Output event: {{ lastOutputMessage }}</p>
+    </article>
+
+    <article class="card">
+      <!--
+        3) Two-way binding
+        [(quantity)] combines [quantity] input + (quantityChange) output.
+        Child updates quantity, and parent value updates automatically.
+      -->
+      <h3>3) Two-way Binding: [(quantity)]</h3>
+      <app-quantity-stepper [(quantity)]="quantity"></app-quantity-stepper>
+      <p class="result">Parent value after child update: {{ quantity }}</p>
+    </article>
+
+    <article class="card">
+      <!--
+        4) Sibling communication through a shared service
+        Publisher and Subscriber are separate sibling components.
+        They share data through CommunicationStateService.
+
+        - Signal: shared reactive state in service.
+        - Subject: emits only new values after subscription.
+        - BehaviorSubject: has an initial value and replays latest value
+          immediately to new subscribers.
+      -->
+      <h3>4) Sibling Communication: Shared Service (Signal + Subject + BehaviorSubject)</h3>
+      <app-message-publisher></app-message-publisher>
+      <app-message-subscriber></app-message-subscriber>
+    </article>
+
+    <article class="card">
+      <!--
+        5) Parent calls child method with @ViewChild
+        Parent gets a reference to child component instance and
+        triggers resetChildValue(), which internally calls child.reset().
+      -->
+      <h3>5) Parent Calls Child Method: ViewChild</h3>
+      <app-child-tools></app-child-tools>
+      <button type="button" (click)="resetChildValue()">Reset child value from parent</button>
+    </article>
+
+    <article class="card">
+      <!--
+        6) Signal-based Input and Output
+        Child receives values with input() and emits events with output().
+      -->
+      <h3>6) Signal Input + Output</h3>
+      <app-signal-product
+        [productName]="signalProductName"
+        [price]="signalProductPrice"
+        (added)="onSignalAdded($event)"
+      ></app-signal-product>
+      <p class="result">Latest signal output: {{ signalOutputMessage }}</p>
+    </article>
+  </div>
+</section>

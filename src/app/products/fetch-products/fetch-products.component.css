@@ -1,0 +1,123 @@
+.products-page {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-link {
+  border: 1px solid #295243;
+  background: #295243;
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+button {
+  border: 1px solid #295243;
+  background: #fffdf8;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.state-message {
+  margin: 12px 0;
+}
+
+.state-message-error {
+  color: #b00020;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e7dbc7;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #fffdf7, #ffffff 38%, #f4f8f6);
+  box-shadow: 0 16px 36px rgba(57, 74, 64, 0.1);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.product-link:hover .product-card,
+.product-link:focus-visible .product-card {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 40px rgba(57, 74, 64, 0.16);
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-copy {
+  padding: 16px;
+}
+
+.product-card h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #1b231f;
+}
+
+.meta {
+  margin: 0 0 8px;
+  color: #59685f;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.description {
+  margin: 12px 0 0;
+  color: #33413a;
+  font-size: 14px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.price {
+  margin: 0;
+  font-weight: 600;
+  color: #1b6b4a;
+}
+
+.stock {
+  margin: 0;
+  font-size: 13px;
+  color: #4f5d56;
+}

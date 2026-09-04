@@ -1,0 +1,4 @@
+.box {
+    display: grid;
+    gap:12px;
+}

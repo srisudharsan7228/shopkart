@@ -1,0 +1,40 @@
+.demo-wrap {
+  margin-top: 32px;
+  padding: 16px;
+  border: 1px solid #c6d2de;
+  border-radius: 10px;
+  background: #f9fcff;
+}
+
+.intro {
+  margin-top: 0;
+  color: #455a64;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid #d4dde6;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.result {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #1f2a36;
+}
+
+button {
+  margin-top: 8px;
+}

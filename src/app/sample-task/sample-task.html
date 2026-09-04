@@ -1,0 +1,39 @@
+<h2>Product List</h2>
+
+<div class="product-list">
+
+    @for(product of products; track product.name ) {
+    <div class="product-card" *appInStock="product.stock;else outOfStockTpl"  (click)="showProduct(product)">
+        <h3>{{ product.name }}</h3>
+        <p> Original Price: {{ product.price }} </p>
+        <p> Discounted Price: {{product.price | discountPrice: product.discount}} </p>
+        <p> {{ product.description }}</p>
+
+    </div>
+
+    <ng-template #outOfStockTpl>
+        <div class="product-card">
+            <h3> {{product.name }}</h3>
+             <p> Original Price: {{ product.price }} </p>
+            <p> Out Of Stock</p>
+        </div>
+    </ng-template>
+
+    }
+</div>
+
+
+@if (selectedProduct) {
+    <div class="product-details">
+    <h3> Selected Product Details</h3>
+    <p> Name: {{selectedProduct.name}}</p>
+    <p> Price: {{selectedProduct.price}}</p>
+    <p> Final Price: {{ selectedProduct.price | discountPrice: selectedProduct.discount}}</p>
+    <p> Discount:{{selectedProduct.discount}}</p>
+    <p> Description: {{selectedProduct.description}}</p>
+    </div>
+
+    <app-signal-price-total
+    [selectedPrice] = "selectedProduct.price | discountPrice: selectedProduct.discount">
+    </app-signal-price-total>
+}

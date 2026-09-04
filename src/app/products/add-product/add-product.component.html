@@ -1,0 +1,61 @@
+<section class="add-product-page">
+  <div class="page-header">
+    <h2>Add Product</h2>
+    <a routerLink="/products" class="back-link">Back to products</a>
+  </div>
+
+  <form  [formGroup]="productForm"  (ngSubmit)="onSubmit($event)">
+    <div class="field-grid">
+      <label>
+        <span>Title</span>
+        <input type="text" formControlName="title" placeholder="BMW Pencil" />
+        @if( hasError('title')) {
+            <small>This is required (minimum 5 character and maximum 25 characters)</small>
+        }
+      </label>
+
+      <label class="full-width">
+        <span>Description</span>
+        <textarea rows="4" formControlName="description" placeholder="Write product description"></textarea>
+        @if( hasError('description')) {
+            <small>This is required (minimum 5 character and maximum 25 characters)</small>
+        }
+      </label>
+
+      <label>
+        <span>Price</span>
+        <input type="number"  formControlName="price" step="0.01" placeholder="199" />
+                @if( hasError('price')) {
+            <small>Price is required and must be atleast 1 Rupee</small>
+        }
+      </label>
+
+      <label>
+        <span>Stock</span>
+        <input type="number" formControlName="stock" placeholder="25" />
+       @if( hasError('stock')) {
+            <small>Stock is required and cannot be negative</small>
+        }
+      </label>
+
+      <label>
+        <span>Brand</span>
+        <input type="text"  formControlName="brand" placeholder="BMW" />
+          @if( hasError('brand')) {
+            <small>brand is required</small>
+        }
+      </label>
+
+      <label>
+        <span>Category</span>
+        <input type="text" formControlName="category" placeholder="Stationery" />
+        @if( hasError('category')) {
+            <small>category is required</small>
+        }
+      </label>
+    </div>
+
+    <button type="submit">Submit Product</button>
+  </form>
+
+</section>

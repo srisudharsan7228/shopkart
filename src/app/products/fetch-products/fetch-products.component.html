@@ -1,0 +1,43 @@
+<section class="products-page">
+  <div class="page-header">
+    <h2>Products</h2>
+    <div class="header-actions">
+      <a class="add-link" routerLink="/products/add">Add Product</a>
+      <button type="button" (click)="productResource.reload()">Reload</button>
+    </div>
+  </div>
+
+
+  @if(productResource.isLoading()) {
+    <p class="state-message"> Loading products...</p>
+  }
+
+  @if(productResource.error()) {
+    <p class="state-message-error"> 
+      could not load products
+    </p>
+  }
+
+  @if(!productResource.isLoading() && !productResource.error()) {
+  <div class="product-grid">
+    @for(product of productResource.value(); track product.id) {
+    <a class="product-link" [routerLink]="['/products', product.id]">
+      <article class="product-card">
+        <img
+          [src]="product.thumbnail"
+          [alt]="product.title" />
+        <div class="card-copy">
+          <p class="meta">{{product.brand}} · {{product.category}}</p>
+          <h3>{{product.title}}</h3>
+          <p class="description">{{product.description}}</p>
+          <div class="card-footer">
+            <p class="price">${{product.price}}</p>
+            <p class="stock">Stock: {{product.stock}}</p>
+          </div>
+        </div>
+      </article>
+    </a>
+  }
+  </div>
+}
+</section>

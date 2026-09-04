@@ -1,0 +1,141 @@
+.shop-header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background: linear-gradient(120deg, #fffef8, #fff7e8);
+	border-bottom: 1px solid #eedfcb;
+}
+
+.header-inner {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 14px 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+}
+
+.brand {
+	color: #1f2937;
+	text-decoration: none;
+	font-size: 24px;
+	font-weight: 800;
+	letter-spacing: 0.3px;
+}
+
+.header-actions {
+	display: flex;
+	gap: 8px;
+}
+
+.header-actions button {
+	border: 1px solid #d6d3d1;
+	background: #fff;
+	color: #1f2937;
+	padding: 8px 12px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.cart-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.cart-count {
+	background: #ff5a3c;
+	color: #fff;
+	border-radius: 999px;
+	min-width: 20px;
+	height: 20px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: 700;
+	padding: 0 5px;
+}
+
+
+.layout-shell {
+	max-width: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr);
+	gap: 12px;
+	align-items: start;
+	min-height: calc(100vh - 69px);
+}
+
+.side-nav {
+	background: #fffdf7;
+	border-right: 1px solid #eedfcb;
+	border-radius: 0;
+	padding: 10px;
+	height: calc(100vh - 69px);
+	position: sticky;
+	top: 69px;
+}
+
+.side-nav h3 {
+	margin: 0 0 8px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #1f2937;
+}
+
+.side-nav a {
+	display: block;
+	padding: 7px 8px;
+	border-radius: 8px;
+	color: #374151;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 1.2;
+}
+
+.side-nav a + a {
+	margin-top: 4px;
+}
+
+.side-nav a:hover {
+	background: #f7efe0;
+	color: #111827;
+}
+
+.page-content {
+	padding: 16px 20px;
+	max-width: 1100px;
+	border: 1px solid #f0e6d7;
+	border-radius: 12px;
+	background: #fff;
+	margin: 16px;
+}
+
+@media (max-width: 840px) {
+	.header-actions {
+		margin-left: auto;
+	}
+
+	.layout-shell {
+		grid-template-columns: 1fr;
+		min-height: auto;
+		gap: 0;
+	}
+
+	.side-nav {
+		position: static;
+		height: auto;
+		border-right: 0;
+		border-bottom: 1px solid #eedfcb;
+	}
+
+	.page-content {
+		margin: 12px;
+	}
+}

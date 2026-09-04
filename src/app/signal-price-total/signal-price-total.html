@@ -1,0 +1,12 @@
+<div class="box">
+    <h2> Title <span> Total Amount: {{totalPrice()}}</span></h2>
+    <label for="priceInput">Product Price</label>
+    <input type="number" min="0" [value]="price()" (input)="onPriceInput($event)" />
+    <label for="quantityInput">Product Quantity</label>
+    <input type="number" min="0" [value]="quantity()" (input)="onQuantityInput($event)" />
+    <button type="button" (click)="decrementQuantity()"> - </button>
+    <button type="button" (click)="incrementQuantity()"> + </button>
+
+    <div>{{ totalPrice() }}</div>
+    <p>{{ effectMessage }}</p>
+</div>
