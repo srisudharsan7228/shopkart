@@ -58,4 +58,11 @@
     <button type="submit">Submit Product</button>
   </form>
 
+  @if (apiResponse) {
+    <section class="result-panel success">
+      <h3>API Response</h3>
+      <pre>{{ apiResponse | json }}</pre>
+    </section>
+  }
+
 </section>

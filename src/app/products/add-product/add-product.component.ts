@@ -1,21 +1,29 @@
 
-import { Component, inject } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { CreateProductRequest } from '../product.model';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, JsonPipe],
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css']
 })
 
 export class AddProductComponent {
   private fb = inject(FormBuilder);
+  private productService = inject(ProductService);
+  private submitPayloadSignal = signal<CreateProductRequest | null>(null);
+
+  addProductRequest = this.productService.addProduct({
+    payload: this.submitPayloadSignal,
+  });
+
   isSubmitted = false;
-  submittedPayload: CreateProductRequest | null = null;
 
    productForm = this.fb.nonNullable.group({
      title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
@@ -36,8 +44,15 @@ export class AddProductComponent {
     }
 
     const payload = this.productForm.getRawValue() as CreateProductRequest;
-    this.submittedPayload = payload;
-    console.log("Payload", this.submittedPayload);
+    this.addProduct(payload);
+  }
+
+  addProduct(payload: CreateProductRequest): void {
+    this.submitPayloadSignal.set(payload);
+  }
+
+  get apiResponse(): unknown | null {
+    return this.addProductRequest.value();
   }
 
   hasError(controlName: keyof CreateProductRequest): boolean {

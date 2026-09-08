@@ -1,10 +1,13 @@
-import { Injectable, resource, Signal } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, resource, Signal } from '@angular/core';
+import type { CreateProductRequest } from './product.model';
 import { Product, ProductApiResponse } from './product.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
 export class ProductService {
+    private http = inject(HttpClient);
 
     readonly productResource = resource<Product[], void>({
         defaultValue: [],
@@ -28,14 +31,27 @@ export class ProductService {
         });
     }
 
+    addProduct({ payload }: { payload: Signal<CreateProductRequest | null>; }) {
+        return resource<unknown | null, CreateProductRequest | undefined>({
+            defaultValue: null,
+            params: () => payload() ?? undefined,
+            loader: async ({ params }) => {
+                if (!params) {
+                    return null;
+                }
+                return firstValueFrom(this.http.post<unknown>('https://jsonexamples.com/products/add', params));
+            }
+        });
+    }
+
     private async fetchProducts() {
-        const response = await fetch('https://jsonexamples.com/products?limit=12');
-        const data = (await response.json()) as ProductApiResponse;
+        const data = await firstValueFrom(
+            this.http.get<ProductApiResponse>('https://jsonexamples.com/products?limit=12')
+        );
         return data.products;
     }
 
     private async fetchProduct(productId: number) {
-        const response = await fetch(`https://jsonexamples.com/products/${productId}`);
-        return (await response.json()) as Product;
+        return firstValueFrom(this.http.get<Product>(`https://jsonexamples.com/products/${productId}`));
     }
 }

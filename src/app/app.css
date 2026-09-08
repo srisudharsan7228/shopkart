@@ -26,7 +26,38 @@
 
 .header-actions {
 	display: flex;
+	align-items: center;
 	gap: 8px;
+}
+
+.login-link {
+	border: 1px solid #295243;
+	background: #295243;
+	color: #ffffff;
+	padding: 8px 12px;
+	border-radius: 10px;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.logout-btn {
+	border: 1px solid #d14f4f;
+	background: #fff6f6;
+	color: #7f1f1f;
+	padding: 8px 12px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.user-pill {
+	margin: 0;
+	padding: 7px 10px;
+	border-radius: 999px;
+	background: #eef6f1;
+	color: #1f4d3b;
+	font-size: 13px;
+	font-weight: 700;
 }
 
 .header-actions button {
