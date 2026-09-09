@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../product.service';
+import { AuthService } from '../../auth/auth.service';
+
 
 @Component({
   standalone: true,
@@ -13,6 +15,7 @@ import { ProductService } from '../product.service';
 export class FetchProductsComponent {
 
   private productService = inject(ProductService);
+  public authService = inject(AuthService);
   productResource = this.productService.productResource;
 
 }

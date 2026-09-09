@@ -1,0 +1,30 @@
+<section class="login-page">
+  <h2>Login</h2>
+  <p class="help-text">Use demo users: admin/admin123 or user/user123</p>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
+    <label>
+      <span>Username</span>
+      <input type="text" formControlName="username" placeholder="admin" />
+      @if (loginForm.controls.username.touched && loginForm.controls.username.invalid) {
+        <small>Username is required.</small>
+      }
+    </label>
+
+    <label>
+      <span>Password</span>
+      <input type="password" formControlName="password" placeholder="admin123" />
+      @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+        <small>Password is required.</small>
+      }
+    </label>
+
+    <button type="submit">Login</button>
+
+    @if (loginError) {
+      <p class="error-message">{{ loginError }}</p>
+    }
+  </form>
+
+  <a class="back-link" routerLink="/products">Back to products</a>
+</section>

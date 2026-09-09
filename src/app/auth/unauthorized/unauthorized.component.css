@@ -1,0 +1,23 @@
+.unauthorized-page {
+  max-width: 620px;
+  margin: 24px auto;
+  border: 1px solid #f0d6d6;
+  background: #fff7f7;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: #8f1d1d;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+a {
+  color: #295243;
+  text-decoration: none;
+  font-weight: 600;
+}

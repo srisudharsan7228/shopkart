@@ -1,0 +1,56 @@
+.login-page {
+  max-width: 520px;
+  margin: 20px auto;
+  border: 1px solid #e7dbc7;
+  border-radius: 18px;
+  padding: 24px;
+  background: #fffdf8;
+}
+
+h2 {
+  margin: 0 0 8px;
+}
+
+.help-text {
+  margin: 0 0 18px;
+  color: #4f5d56;
+}
+
+form {
+  display: grid;
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+}
+
+input {
+  border: 1px solid #c9d3cd;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+small,
+.error-message {
+  color: #b00020;
+}
+
+button {
+  border: 1px solid #295243;
+  background: #295243;
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.back-link {
+  margin-top: 14px;
+  display: inline-block;
+  color: #295243;
+  text-decoration: none;
+}

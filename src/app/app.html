@@ -3,10 +3,14 @@
 		<a class="brand" routerLink="/products">ShopKart</a>
 
 		<div class="header-actions">
-			<button type="button" class="search-btn">Search</button>
-			<button type="button" class="cart-btn">
-				Cart <span class="cart-count">2</span>
-			</button>
+			@if (authService.currentUser()) {
+				<p class="user-pill">
+					{{ authService.currentUser()?.username }} ({{ authService.currentUser()?.role }})
+				</p>
+				<button type="button" class="logout-btn" (click)="logout()">Logout</button>
+			} @else {
+				<a class="login-link" routerLink="/login">Login</a>
+			}
 		</div>
 	</div>
 </header>
@@ -14,6 +18,9 @@
 <div class="layout-shell">
 	<aside class="side-nav" aria-label="Side navigation">
 		<a routerLink="/products">Products</a>
+		@if (authService.isAdmin()) {
+			<a routerLink="/products/add">Add Product</a>
+		}
 		<a href="#">Categories</a>
 		<a href="#">Offers</a>
 		<a href="#">Contact</a>
