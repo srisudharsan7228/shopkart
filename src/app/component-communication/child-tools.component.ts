@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-child-tools',
@@ -25,4 +25,14 @@ export class ChildToolsComponent {
   reset(): void {
     this.clicks = 0;
   }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const triggerPosition = document.documentElement.scrollHeight - 200;
+
+    if (scrollPosition >= triggerPosition) {
+      console.log("bottom reached");
+    }
+}
 }
