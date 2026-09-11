@@ -1,6 +1,16 @@
 <section class="products-page">
   <div class="page-header">
     <h2>Products</h2>
+    <div>
+      <label class="search-label"> Search by Product name</label>
+      <input 
+      id="product-search"
+      class="search-input"
+      type="text"
+      [value]="searchText()"
+      (input) = "OnSearchInput($event)"
+      />
+    </div>
     <div class="header-actions">
       @if(authService.isAdmin()) {
         <a class="add-link" routerLink="/products/add">Add Product</a>
