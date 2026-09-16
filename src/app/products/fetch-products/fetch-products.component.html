@@ -15,12 +15,12 @@
       @if(authService.isAdmin()) {
         <a class="add-link" routerLink="/products/add">Add Product</a>
       }
-      <button type="button" (click)="productResource.reload()">Reload</button>
+      <button type="button" (click)="reloadProducts()">Reload</button>
     </div>
   </div>
 
 
-  @if(productResource.isLoading()) {
+  @if(productResource.isLoading() && !products().length) {
     <p class="state-message"> Loading products...</p>
   }
 
@@ -30,9 +30,9 @@
     </p>
   }
 
-  @if(!productResource.isLoading() && !productResource.error()) {
+  @if(!productResource.error() && products().length) {
   <div class="product-grid">
-    @for(product of productResource.value(); track product.id) {
+    @for(product of products(); track product.id) {
     <a class="product-link" [routerLink]="['/products', product.id]">
       <article class="product-card">
         <img
@@ -51,5 +51,9 @@
     </a>
   }
   </div>
+}
+
+@if(!productResource.isLoading() && !productResource.error() && !products().length) {
+  <p class="state-message">No products found.</p>
 }
 </section>

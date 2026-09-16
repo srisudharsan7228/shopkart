@@ -1,7 +1,8 @@
-import { Component, inject, signal, HostListener } from '@angular/core';
+import { Component, effect, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../product.service';
 import { AuthService } from '../../auth/auth.service';
+import { Product } from '../product.model';
 
 @Component({
   standalone: true,
@@ -10,19 +11,68 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './fetch-products.component.html',
   styleUrl: './fetch-products.component.css'
 })
-
 export class FetchProductsComponent {
-
   private productService = inject(ProductService);
   public authService = inject(AuthService);
-  //productResource = this.productService.productResource;
-  searchText = signal("");
 
-  productResource = this.productService.searchProductResource({searchText: this.searchText});
+  searchText = signal('');
+  skip = signal(0);
+  products = signal<Product[]>([]);
+  isLoadMore = signal(true);
+  totalLimit = 0;
+  pageSize = 12;
+
+  private isNextPageLocked = false;
+  private lastProcessedPageRequestKey = '';
+
+  productResource = this.productService.searchProductResource({
+    searchText: this.searchText,
+    skip: this.skip
+  });
+
+  constructor() {
+    effect(() => {
+      if (!this.productResource.isLoading()) {
+        this.isNextPageLocked = false;
+      }
+    });
+
+    effect(() => {
+      const isLoading = this.productResource.isLoading();
+      const hasError = !!this.productResource.error();
+      const pageResponse = this.productResource.value();
+      const page = pageResponse.products;
+      const currentSkip = this.skip();
+      const pageRequestKey = `[${this.searchText().trim()}|${currentSkip}]`;
+
+      if (isLoading || hasError || this.lastProcessedPageRequestKey === pageRequestKey) {
+        return;
+      }
+
+      this.totalLimit = pageResponse.total;
+
+      if (currentSkip === 0) {
+        this.products.set(page);
+      } else {
+        this.products.update((current) => [...current, ...page]);
+      }
+
+      if (page.length < this.pageSize || currentSkip + this.pageSize >= this.totalLimit) {
+        this.isLoadMore.set(false);
+      }
+
+      this.lastProcessedPageRequestKey = pageRequestKey;
+    });
+  }
 
   OnSearchInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.searchText.set(value);
+    this.skip.set(0);
+    this.products.set([]);
+    this.totalLimit = 0;
+    this.isLoadMore.set(true);
+    this.lastProcessedPageRequestKey = '';
   }
 
   @HostListener('window:scroll')
@@ -31,8 +81,25 @@ export class FetchProductsComponent {
     const triggerPosition = document.documentElement.scrollHeight - 200;
 
     if (scrollPosition >= triggerPosition) {
-      console.log("bottom reached");
+      this.loadNextProducts();
     }
-}
-  
+  }
+
+  loadNextProducts() {
+    if (!this.isLoadMore() || this.isNextPageLocked || this.productResource.isLoading()) {
+      return;
+    }
+
+    this.isNextPageLocked = true;
+    this.skip.update((currentSkip) => currentSkip + this.pageSize);
+  }
+
+  reloadProducts() {
+    this.skip.set(0);
+    this.products.set([]);
+    this.totalLimit = 0;
+    this.isLoadMore.set(true);
+    this.lastProcessedPageRequestKey = '';
+    this.productResource.reload();
+  }
 }

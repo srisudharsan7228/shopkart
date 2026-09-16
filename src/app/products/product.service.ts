@@ -32,22 +32,31 @@ export class ProductService {
         });
     }
 
-    searchProductResource({searchText}: {searchText: Signal<string>}) {
-        return rxResource<Product[], string>({
-            defaultValue: [],
-            params: () => searchText(),
+    searchProductResource({ searchText, skip }: { searchText: Signal<string>; skip: Signal<number>; }) {
+        return rxResource<{ products: Product[]; total: number }, { searchText: string; skip: number }>({
+            defaultValue: { products: [], total: 0 },
+            params: () => ({
+                searchText: searchText(),
+                skip: skip()
+            }),
             stream: ({ params }) =>
                 of(params).pipe(
-                    debounceTime(500),
-                    distinctUntilChanged(),
-                    switchMap((searchValue) => {
-                        const query = searchValue.trim();
-                        const endpoint = query
-                            ? `https://jsonexamples.com/products/search?q=${query}`
-                            : `https://jsonexamples.com/products?limit=12`;
+                    debounceTime(1000),
+                    distinctUntilChanged((previous, current) => (
+                        previous.searchText === current.searchText && previous.skip === current.skip
+                    )),
+                    switchMap(({ searchText: currentSearchText, skip: currentSkip }) => {
+                        const query = currentSearchText.trim();
+                        const baseEndpoint = query
+                            ? `https://jsonexamples.com/products/search?q=${encodeURIComponent(query)}`
+                            : 'https://jsonexamples.com/products';
+                        const endpoint = `${baseEndpoint}${query ? '&' : '?'}limit=12&skip=${currentSkip}`;
                         return this.http
                             .get<ProductApiResponse>(endpoint)
-                            .pipe(map((response) => response.products));
+                            .pipe(map((response) => ({
+                                products: response.products,
+                                total: response.total ?? response.products.length
+                            })));
                     })
                 )
         });
