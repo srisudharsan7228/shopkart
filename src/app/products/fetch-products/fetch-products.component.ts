@@ -2,7 +2,7 @@ import { Component, effect, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../product.service';
 import { AuthService } from '../../auth/auth.service';
-import { Product } from '../product.model';
+import { ProductStore } from '../product.store';
 
 @Component({
   standalone: true,
@@ -13,13 +13,13 @@ import { Product } from '../product.model';
 })
 export class FetchProductsComponent {
   private productService = inject(ProductService);
+  private productStore = inject(ProductStore);
   public authService = inject(AuthService);
-
+ 
   searchText = signal('');
   skip = signal(0);
-  products = signal<Product[]>([]);
-  isLoadMore = signal(true);
-  totalLimit = 0;
+  products = this.productStore.products;
+  isLoadMore = this.productStore.hasMore;
   pageSize = 12;
 
   private isNextPageLocked = false;
@@ -48,18 +48,7 @@ export class FetchProductsComponent {
       if (isLoading || hasError || this.lastProcessedPageRequestKey === pageRequestKey) {
         return;
       }
-
-      this.totalLimit = pageResponse.total;
-
-      if (currentSkip === 0) {
-        this.products.set(page);
-      } else {
-        this.products.update((current) => [...current, ...page]);
-      }
-
-      if (page.length < this.pageSize || currentSkip + this.pageSize >= this.totalLimit) {
-        this.isLoadMore.set(false);
-      }
+      this.productStore.setProductsPage(page, pageResponse.total, false);
 
       this.lastProcessedPageRequestKey = pageRequestKey;
     });
@@ -69,9 +58,7 @@ export class FetchProductsComponent {
     const value = (event.target as HTMLInputElement).value;
     this.searchText.set(value);
     this.skip.set(0);
-    this.products.set([]);
-    this.totalLimit = 0;
-    this.isLoadMore.set(true);
+    this.productStore.resetList();
     this.lastProcessedPageRequestKey = '';
   }
 
@@ -96,9 +83,7 @@ export class FetchProductsComponent {
 
   reloadProducts() {
     this.skip.set(0);
-    this.products.set([]);
-    this.totalLimit = 0;
-    this.isLoadMore.set(true);
+    this.productStore.resetList();
     this.lastProcessedPageRequestKey = '';
     this.productResource.reload();
   }

@@ -1,9 +1,10 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 
 import { ProductService } from '../product.service';
+import { ProductStore } from '../product.store';
 
 @Component({
   standalone: true,
@@ -14,7 +15,14 @@ import { ProductService } from '../product.service';
 })
 export class ProductDetailComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly productStore = inject(ProductStore);
   private readonly productService = inject(ProductService);
+
+  constructor() {
+  effect(() => {
+    console.log("product lis", this.productStore.products());
+  });
+}
 
   readonly productId = toSignal(
     this.route.paramMap.pipe(map((params) => Number(params.get('id')))),
